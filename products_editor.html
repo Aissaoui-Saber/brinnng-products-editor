@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0px;
+            margin: 0px;
+            
+            font-family: 'Segoe UI';
+            color: white;
+        }
+        body{
+            background-color: rgba(50,50,50,1);
+        }
+        #grid_container{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+
+        }
+        #unTreatedProductsContainer,#treatedProductsContianer{
+            padding: 1vh;
+            height: 50vh;
+            max-height: 50vh;
+            border: solid 2px gray;
+            text-align: center;
+        }
+        #unTreatedProductsContainer{
+
+        }
+        #treatedProductsContianer{
+
+        }
+        #UP_tableContainer,#TP_tableContainer{
+            max-height: 40vh;
+            overflow-y: scroll;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        *::-webkit-scrollbar-track
+        {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            background-color: #7e7e7e;
+        }
+
+        *::-webkit-scrollbar
+        {
+            width: 12px;
+            background-color: transparent;
+        }
+
+        *::-webkit-scrollbar-thumb
+        {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #555;
+        }
+
+
+
+        .table{
+            border-collapse: collapse;
+            width: 100%;
+        }
+        table td{
+            border: 1px solid wheat;
+            padding: 0.5vh;            
+        }
+        .table th{
+            border: 1px solid wheat;
+            padding: 0.5vh;            
+            top: 0;
+            position: sticky;
+            background-color: rgb(53, 62, 70);
+        }
+        input[type="button"]{
+            cursor: pointer;
+            padding: 0.5vh 1vh;
+            border-radius: 0.5em;
+            border: none;
+            font-weight: bold;
+        }
+
+        .table input[type="button"]{
+            background-color: wheat;
+            width: 100%;
+            color: #555; 
+        }
+        .table input[type="button"]:hover{
+            background-color: rgb(187, 161, 130);
+        }
+        .table input[type="button"]:active{
+            background-color: rgb(255, 212, 155);
+        }
+        #productEditingContainer{
+            width: 100%;
+            height: 100vh;
+            border: solid 2px gray;
+            padding: 2em;
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column: 2;
+            align-self: center;
+            justify-self: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-items: center;
+            gap: 0.6em;
+            overflow-y: scroll;
+
+        }
+        #creatorName,#creation_date,#creation_time{
+            font-weight: bold;
+        }
+        .inputLabel{
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        input[type="text"]{
+            padding: 0.4em 0.6em;
+            background-color: wheat;
+            border: none;
+            border-radius: 1em;
+            color: #555;
+            font-size: 1em;
+            box-shadow: 5px 5px 20px black;
+            font-weight: 600;
+        }
+        input[type="text"]:hover{
+            background-color: rgb(255, 248, 239);
+        }
+        select{
+            padding: 0.4em 0.6em;
+            background-color: wheat;
+            border: none;
+            border-radius: 1em;
+            color: rgb(58, 58, 58);
+            font-size: 1.1em;
+            font-weight: 400;
+            width: 100%;
+            box-shadow: 5px 5px 20px black;
+            font-weight: 600;
+        }
+        option{
+            color: rgb(58, 58, 58);
+        }
+        input[type="button"]{
+            padding: 0.5em 1em;
+            cursor: pointer;
+            box-shadow: 5px 5px 20px black;
+        }
+
+        #button_approuve,#button_update{
+            padding: 1em 3em;
+            font-size: 1em;
+            margin-top: 2em;
+        }
+        #button_update{
+            background-color: rgb(15, 86, 119);
+        }
+        #button_approuve{
+            background-color: rgb(20, 105, 20);
+        }
+        #button_delete{
+            background-color: rgba(255, 99, 71, 0.493);
+            margin-left: 1.5em;
+        }
+
+
+        #button_update:hover{
+            
+            background-color: rgb(18, 113, 156);
+        }
+        #button_update:active{
+            
+            background-color: rgb(9, 50, 70);
+        }
+        #button_approuve:hover{
+            background-color: rgb(29, 151, 29);
+        }
+        #button_approuve:active{
+            background-color: rgb(13, 66, 13);
+        }
+        #button_delete:hover{
+            background-color: rgb(255, 99, 71);
+        }
+        #button_delete:active{
+            background-color: rgb(53, 33, 30);
+        }
+
+
+        #imagesContainer{
+            display: flex;
+            width: 80%;
+            grid-column: 1/3;
+            min-height: 13em;
+            overflow-x: scroll;
+        }
+        .imageContainer{
+            margin: 1em;
+            text-align: center;
+        }
+
+        .imageContainer img{
+            width: 15vh;
+            height: 12vh;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 5px 5px 20px black;
+        }
+        .imageContainer img:hover{
+            opacity: 0.5;
+        }
+
+        .imageContainer input[type="button"]{
+            background-color: tomato;
+            margin: 0.1em auto;
+        }
+        .imageContainer input[type="button"]:hover{
+            background-color: rgb(255, 144, 125);
+            margin: 0.1em auto;
+        }
+        .imageContainer input[type="button"]:active{
+            background-color: rgb(99, 55, 47);
+            margin: 0.1em auto;
+        }
+
+        #button_addImage{
+            background-color: transparent;
+            border: 2px solid gray;
+            color:gray;
+            border-radius: 5px;
+            font-size: 3em;
+            width: 3em;
+            height: 3em;
+        }
+        #button_addImage:hover{
+            background-color: rgba(65, 65, 65, 0.61);
+        }
+        #button_addImage:active{
+            background-color: rgba(100, 99, 99, 0.932);
+        }
+        #naturesListFR,#naturesListAR{
+            background-color: rgb(9, 50, 70);
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns:1fr;
+            justify-items: left;
+            padding: 0.8em;
+            position: fixed;
+            visibility: hidden;
+        }
+        .natureItem{
+            padding: 0.2em;
+        }
+        .natureItem:hover{
+            background-color: rgb(16, 86, 121);;
+            width: 100%;
+            cursor: default;
+            user-select: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="grid_container">
+        <div id="unTreatedProductsContainer">
+            <h2>Non Traités <label id="UT_count">()</label></h2>
+            <div id="UP_tableContainer">
+                <Table class="table" id="untreatedProductsTable">
+                    <th>ID</th>
+                    <th>CODE BAR</th>
+                    <th>Créateur</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+                </Table>
+            </div>
+        </div>
+        <div id="treatedProductsContianer">
+            <h2>Traités  <label id="T_count">()</label></h2>
+            <div id="TP_tableContainer">
+                <Table class="table" id="treatedProductsTable">
+                    <th>ID</th>
+                    <th>CODE BAR</th>
+                    <th>Créateur</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+
+                
+                </Table>
+            </div>
+        </div>
+        <div id="productEditingContainer">
+
+            <div style="grid-column: 1/3; width: 80%;text-align: center;">
+                <p style="display: inline;">Crée le <label id="creation_date">...</label> à <label id="creation_time">...</label> par <label id="creatorName">...</label> </p>
+                <input type="button" value="supprimer" id="button_delete" style="display: inline;" onclick="deleteProduct()">
+            </div>
+
+
+            <div style="grid-column: 1/3; width: 50%;">
+                <label class="inputLabel" for="barcode">Code bar</label><br>
+                <input type="text" name="barcode" id="input_barcode" style="width: 100%;">
+            </div>
+
+            <div style="width: 50%;">
+                <label class="inputLabel" for="measuringUnitFR">Unité de mésure</label><br>
+                <select id="input_measuringUnitFR" name="measuringUnitFR">
+                </select>
+            </div>
+            <div style="width: 50%;">
+                <label class="inputLabel" for="measuringUnitAR" style="float: right;">وحدة القياس</label><br>
+                <select id="input_measuringUnitAR" name="measuringUnitAR" style="float: right;">
+              </select>
+            </div>
+
+
+            <div style="grid-column: 1/3; width: 50%;">
+                <label class="inputLabel" for="quantity">Qauntité</label><br>
+                <input type="text" name="quantity" id="input_quantity" style="width: 100%;"><br>
+            </div>
+
+            
+            <div style="width: 90%;">
+                <label class="inputLabel" for="natureFR">Nature du produit</label><br>
+                <input type="text" name="natureFR" id="input_natureFR" style="width: 100%;">
+                <div id="naturesListFR">
+                    
+                </div>
+            </div>
+            <div style="width: 90%;">
+                <label class="inputLabel" for="natureAR" style="float: right;">طبيعة المنتوج</label><br>
+                <input type="text" name="natureAR" id="input_natureAR" style="float: right; width: 100%;">
+                <div id="naturesListAR" style="margin-top: 2.2em;">
+                    
+                </div>
+            </div>
+
+            <div style="width: 90%;">
+                <label class="inputLabel" for="brandFR">Marque</label><br>
+                <input type="text" name="brandFR" id="input_brandFR" style="width: 100%;">
+            </div>
+            <div style="width: 90%;">
+                <label class="inputLabel" for="brandAR" style="float: right;">علامة المنتج</label><br>
+                <input type="text" name="brandAR" id="input_brandAR" style="float: right; width: 100%;">
+            </div>
+
+            <div style="width: 90%;">
+                <label class="inputLabel" for="typeFR">Type / Modele</label><br>
+                <input type="text" name="typeFR" id="input_typeFR" style="width: 100%;">
+            </div>
+            <div style="width: 90%;">
+                <label class="inputLabel" for="typeAR" style="float: right;">نوع المنتج</label><br>
+                <input type="text" name="typeAR" id="input_typeAR" style="float: right; width: 100%;">
+            </div>
+
+            <div style="width: 50%;">
+                <label class="inputLabel" for="vendingUnitFR">Unité de vente</label><br>
+                <select id="input_vendingUnitFR" name="vendingUnitFR">
+                </select>
+            </div>
+            <div style="width: 50%;">
+                <label class="inputLabel" for="vendingUnitAR" style="float: right;">وحدة البيع</label><br>
+                <select id="input_vendingUnitAR" name="vendingUnitAR" style="float: right;">
+              </select>
+            </div>
+
+
+            <div style="width: 90%;">
+                <label class="inputLabel" for="tasteFR">Gout / Arome</label><br>
+                <input type="text" name="tasteFR" id="input_tasteFR" style="width: 100%;">
+            </div>
+            <div style="width: 90%;">
+                <label class="inputLabel" for="tasteAR" style="float: right;">الذوق او النكهة</label><br>
+                <input type="text" name="tasteAR" id="input_tasteAR" style="float: right; width: 100%;">
+            </div>
+
+            <div style="width: 90%;">
+                <label class="inputLabel" for="titleFR">Intitulé du produit</label><br>
+                <input type="text" name="title" id="input_titleFR" style="width: 100%;">
+            </div>
+            <div style="width: 90%;">
+                <label class="inputLabel" for="titleAR" style="float: right;">عنوان المنتج</label><br>
+                <input type="text" name="titleAR" id="input_titleAR" style="float: right; width: 100%;">
+            </div>
+
+            <input type="button" value="modifier" id="button_update">
+            <input type="button" value="approuver" id="button_approuve">
+
+
+            <div id="imagesContainer">
+                <div style="display: grid;justify-items: center;align-items: center;">
+                    <input type="button" value="+" id="button_addImage" >
+                </div>
+            </div>
+            
+        </div>
+    </div>
+	<script src="http://195.179.193.245/web/productsEditor/script.js"></script>
+</body>
+</html>
